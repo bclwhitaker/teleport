@@ -1,0 +1,14 @@
+{
+  "name": "teleport",
+  "description": "Flash video player that makes Flash work like HTML5 video",
+  "version": "1.0.0",
+  "private": false,
+  "scripts": {
+    "start": "",
+    "test": ""
+  },
+  "dependencies": {
+    "mongodb": "~1.2.8"
+  },
+  "devDependencies": {}
+}

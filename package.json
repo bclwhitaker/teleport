@@ -1,6 +1,6 @@
 {
   "name": "teleport",
-  "description": "Flash video player that makes Flash work like HTML5 video",
+  "description": "An node app to keep video sessions alive across time and space.",
   "version": "1.0.0",
   "private": false,
   "scripts": {

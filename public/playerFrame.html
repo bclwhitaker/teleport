@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head><title>Teleport Plugin Plugin Example</title></head>
+<style>
+.example-description {
+  background-color: #ddd;
+  border: thin solid #333;
+  padding: 5px;
+}
+</style>
+<link rel="stylesheet" href="http://vjs.zencdn.net/4.1/video-js.css">
+<script src="http://vjs.zencdn.net/4.1/video.js"></script>
+	<body>
+		<p class="example-description">
+		  You can see a player configured with the Teleport Plugin plugin below. Check out
+		  the page source to see an example of how to configure the plugin yourself.
+		</p>
+		<video class="video-js vjs-default-skin" src="http://vjs.zencdn.net/v/oceans.mp4" data-setup="{}" controls></video>
+		
+		<script src="http://localhost:8080/src/videojs.teleport-plugin.js"></script>
+		<!-- 
+		  video.js will automatically initialize the video element since it's loaded in
+		  the head of the document but you still need to configure and initialize the
+		  plugin.
+		-->
+		<script>
+		var
+		
+		  // save a reference to the video element
+		  video = document.querySelector('video'),
+		
+		  // save a reference to the video.js player for that element
+		  player = videojs(video),
+		  
+		  fetchUserId = function() {
+	      var
+	        // A list of all cookies accessible from this domain. 
+	        cookieList = document.cookie.split(';'),
+	        
+	        // Used when looping through the list to find BC_teleport.
+	        currentCookie;
+	
+	      return 'test';
+	
+	      // Go through the list of browser cookies
+	      for (var i=0; i < cookieList.length; i++) {
+	        currentCookie = cookieList[i];
+	          if (currentCookie.indexOf('BC_teleport=') != -1) {
+	            return currentCookie.split('=')[1];
+	        }
+	      }
+	      // If no applicable cookie was found we return null.  
+	      return null;
+	    };
+		
+		  // initialize the plugin with some custom options:
+		  player.teleportplugin({
+		    customOption: false
+		  });
+		  
+		  // If we're detecting the cookie set background to green!
+	  	if (fetchUserId()) {
+	  		document.body.style.background = 'green';	
+	  	} else {
+	  		document.body.style.background = 'red';
+	  	}
+		</script>
+	</body>
+</html>

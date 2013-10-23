@@ -1,9 +1,7 @@
 <!doctype html>
 <html>
 	<header>
-		<title>
-
-		</title>
+		<title>pew pew teleport!</title>
 	</header>
 	<body>
 		<div id="fb-root"></div>
@@ -28,6 +26,7 @@
 		      // login status of the person. In this case, we're handling the situation where they 
 		      // have logged in to the app.
 		      testAPI();
+		      onSignIn();
 		    } else if (response.status === 'not_authorized') {
 		      // In this case, the person is logged into Facebook, but not into the app, so we call
 		      // FB.login() to prompt them to do so. 
@@ -48,7 +47,7 @@
 		    }
 		  });
 		  };
-		
+
 		  // Load the SDK asynchronously
 		  (function(d){
 		   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
@@ -108,16 +107,22 @@
 				return null;
 			}
 			
+			/**
+			 * Called when the user has successfully logged in to facebook.
+			 * Adds an iframe containing the player etc to play.
+			 * 
+			 * TODO: There's definitely a better, cleaner, prettier way of doing this!
+			 */
+			function onSignIn() {
+				var iframe = document.createElement('iframe');
+				iframe.src = 'http://localhost:8081/playerFrame.html';
+				iframe.width = 1000;
+				iframe.height = 500;
+				document.body.appendChild(iframe);
+			}
+					
 		</script>
-		
-		<!--
-		  Below we include the Login Button social plugin. This button uses the JavaScript SDK to
-		  present a graphical Login button that triggers the FB.login() function when clicked.
-		
-		  Learn more about options for the login button plugin:
-		  /docs/reference/plugins/login/ -->
-		
-		<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>
+		<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>		
 	</body>
 </html>
 

@@ -3,7 +3,7 @@ var
   mongoose = require('mongoose'),
 
   app = express(),
-  appPort = 8081,
+  appPort = 80,
 
   positionSchema,
   Position;
@@ -31,8 +31,8 @@ app.get('/set/:userId/:videoId/:currentPosition', function (req, res) {
   res.set('Access-Control-Allow-Origin','http://ec2-107-20-72-18.compute-1.amazonaws.com');  
   var 
     userId = req.params.userId,
-    videoId = req.params.videoId,
-    currentPosition = req.params.currentPosition,
+    videoId = parseInt(req.params.videoId),
+    currentPosition = parseInt(req.params.currentPosition),
 
     position;
 
@@ -43,16 +43,17 @@ app.get('/set/:userId/:videoId/:currentPosition', function (req, res) {
     });  
     return;
   }
-  position = new Position({
-      userId: userId,
-      videoId: videoId
-  });
-  Position.update(position, {$set: {'currentPosition': currentPosition, date: new Date()}}, {upsert: true}, function (err, position) {
-    if (err) {
-      res.send('Error: ', err);
-    }//TODO handle err
-    console.log(position);
-    res.send('Success!');
+  Position.update(
+    {userId: userId, videoId: videoId}, 
+    {$set: {
+      currentPosition: currentPosition, 
+      date: new Date()}}, 
+    {upsert: true}, 
+    function (err, position) {
+      if (err) {
+        res.send('Error: ', err);
+      }
+      res.send('Success!');
   });
 });
 
@@ -70,8 +71,6 @@ app.get('/get/:userId/:videoId', function (req, res) {
     return;
   }
   Position.find({userId: userId, videoId: videoId}, function (err, results) {
-    console.log(results);
-    console.log(results[results.length-1].currentPosition);
-    res.send(results[results.length-1].currentPosition.toString());
+    res.send(results[0].currentPosition.toString());
   });
 });

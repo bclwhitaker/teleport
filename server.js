@@ -44,6 +44,7 @@ app.get('/set/:userId/:videoId/:currentPosition', function (req, res) {
     });  
     return;
   }
+
   Position.update(
     {userId: userId, videoId: videoId}, 
     {$set: {
@@ -55,6 +56,34 @@ app.get('/set/:userId/:videoId/:currentPosition', function (req, res) {
         res.send('Error: ', err);
       }
       res.send('Success!');
+  });
+});
+
+app.get('/delete/:userId/:videoId', function (req, res) {
+  //res.set('Access-Control-Allow-Origin','http://ec2-107-20-72-18.compute-1.amazonaws.com');
+  res.set('Access-Control-Allow-Origin', '*');
+  var 
+    userId = req.params.userId,
+    videoId = parseInt(req.params.videoId),
+    currentPosition = parseInt(req.params.currentPosition),
+
+    position;
+
+  if (!userId || !videoId) {
+    res.json(412, {
+      errorCode: 'MissingRequiredParam',
+      errorMessage: 'You must provide a valid userId, videoId, and position in the request.'
+    });  
+    return;
+  }
+  
+  Position.remove(
+    {userId: userId, videoId: videoId}, 
+    function (err, position) {
+      if (err) {
+        res.send('Error: ', err);
+      }
+      res.send('Deleted!');
   });
 });
 

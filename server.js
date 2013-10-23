@@ -28,7 +28,8 @@ db.once('open', function() {
 });
 
 app.get('/set/:userId/:videoId/:currentPosition', function (req, res) {
-  res.set('Access-Control-Allow-Origin','http://ec2-107-20-72-18.compute-1.amazonaws.com');  
+  //res.set('Access-Control-Allow-Origin','http://ec2-107-20-72-18.compute-1.amazonaws.com');
+  res.set('Access-Control-Allow-Origin', '*');
   var 
     userId = req.params.userId,
     videoId = parseInt(req.params.videoId),
@@ -58,7 +59,8 @@ app.get('/set/:userId/:videoId/:currentPosition', function (req, res) {
 });
 
 app.get('/get/:userId/:videoId', function (req, res) {
-  res.set('Access-Control-Allow-Origin','http://ec2-107-20-72-18.compute-1.amazonaws.com');
+  //res.set('Access-Control-Allow-Origin','http://ec2-107-20-72-18.compute-1.amazonaws.com');
+  res.set('Access-Control-Allow-Origin', '*');
   var 
     userId = req.params.userId,
     videoId = req.params.videoId;

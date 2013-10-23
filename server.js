@@ -73,6 +73,10 @@ app.get('/get/:userId/:videoId', function (req, res) {
     return;
   }
   Position.find({userId: userId, videoId: videoId}, function (err, results) {
-    res.send(results[0].currentPosition.toString());
+    if (results[0] && results[0].currentPosition > 0 ) {
+      res.send(results[0].currentPosition.toString());
+    } else {
+      res.send('0')
+    }
   });
 });

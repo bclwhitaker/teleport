@@ -115,14 +115,61 @@
 			 */
 			function onSignIn() {
 				var iframe = document.createElement('iframe');
+				var loginContainer = document.getElementById('loginContainer');
+
 				iframe.src = 'http://localhost:8081/playerFrame.html';
+				iframe.id = 'playerContainer';
 				iframe.width = 1000;
 				iframe.height = 500;
+				
+				loginContainer.style.visibility = 'hidden'
 				document.body.appendChild(iframe);
 			}
-					
 		</script>
-		<fb:login-button show-faces="true" width="200" max-rows="1"></fb:login-button>		
+		
+		<div id='loginContainer'>
+			<fb:login-button show-faces="false" width="200" max-rows="1" id='fbButton'></fb:login-button>				
+		</div>
+		<style media="screen" type="text/css">
+			#playerContainer{
+	      position:absolute;
+	      border-style:ridge;
+				border-width:5px;
+				border-color:grey;
+	      width:40%;
+	      height:40%;
+	      top:50%;
+	      left:40%;
+	      margin:-150px 0 0 -150px;
+	      background-color: rgba(218,112,214,0.5);
+			}
+			
+			#loginContainer{
+	      position:absolute;
+	      border-style:ridge;
+				border-width:5px;
+				border-color:grey;
+	      width:40%;
+	      height:40%;
+	      top:50%;
+	      left:40%;
+	      margin:-150px 0 0 -150px;
+	      background-color: rgba(218,112,214,0.5);
+			}
+			
+			#fbButton{
+				position:absolute;
+	      top:40%;
+	      left:40%;
+			}
+		
+			body {
+				background:#ffffff url('http://greywolf.critter.net/images/gallery/critters/2007-09-14-happy-pink-unicorn.jpg') no-repeat left top;
+				background-size: 100%;
+			}
+		</style>
+		
+				
 	</body>
 </html>
 

@@ -3,7 +3,7 @@ var
   mongoose = require('mongoose'),
 
   app = express(),
-  appPort = 8081,
+  appPort = 80,
 
   positionSchema,
   Position;

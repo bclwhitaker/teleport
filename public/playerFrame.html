@@ -3,35 +3,71 @@
 <head><title>Teleport Plugin Plugin Example</title></head>
 <link rel="stylesheet" href="http://vjs.zencdn.net/4.1/video-js.css">
 <script src="http://vjs.zencdn.net/4.1/video.js"></script>
-	<body>
-		<video id='videoPlayer' class="video-js vjs-default-skin" src="http://vjs.zencdn.net/v/oceans.mp4" data-setup="{}" controls></video>
-		<script src="http://solutions.brightcove.com/lwhitaker/plugins/videojs.teleport-plugin.min.js"></script>
-		<!-- 
-		  video.js will automatically initialize the video element since it's loaded in
-		  the head of the document but you still need to configure and initialize the
-		  plugin.
-		-->
-		<script>
-		var
-		
-		  // save a reference to the video element
-		  video = document.querySelector('video'),
-		
-		  // save a reference to the video.js player for that element
-		  player = videojs(video);
-		
-		  // initialize the plugin with some custom options:
-		  player.teleportplugin({
-		    customOption: false
-		  });
-		  
-		  var myPlayer = _V_("videoPlayer");
-		  
-	    _V_("videoPlayer").ready(function(){
-      	var myPlayer = this;
-				myPlayer.width(window.innerWidth - 20);
-				myPlayer.height(window.innerHeight - 20);
-    	});
-		</script>
-	</body>
+  <body>
+    <video id='demoPlayer' src='http://media.w3.org/2010/05/sintel/trailer.mp4' class="video-js vjs-default-skin" data-setup="{}" controls></video>
+    <script src="http://solutions.brightcove.com/lwhitaker/plugins/videojs.teleport-plugin.min.js"></script>
+
+    <!-- 
+      video.js will automatically initialize the video element since it's loaded in
+      the head of the document but you still need to configure and initialize the
+      plugin.
+    -->
+    <script>
+    var    
+      /**
+       * Fetchs the user's facebook ID from the BC_teleport cookie if it's present. 
+       * @return String representing the userId. If no cookie was found returns null.
+       */ 
+      userId = function() {
+        var
+          // A list of all cookies accessible from this domain. 
+          cookieList = document.cookie.split(';'),
+          
+          // Used when looping through the list to find BC_teleport.
+          currentCookie;
+
+        // Go through the list of browser cookies
+        for (var i=0; i < cookieList.length; i++) {
+          currentCookie = cookieList[i];
+            if (currentCookie.indexOf('BC_teleport=') !== -1) {
+              return currentCookie.split('=')[1];
+          }
+        }
+        // If no applicable cookie was found we return null.  
+        return null;
+      },
+
+      videoId = function() {
+        return 'demo';
+      },
+        
+      // save a reference to the video.js player for that element
+      player = videojs("demoPlayer");
+
+        // initialize the plugin with some custom options:
+    player.teleportplugin({
+      teleportServer: 'http://ec2-107-20-72-18.compute-1.amazonaws.com',
+      fetchUserId: userId,
+      fetchVideoId: videoId, 
+      fetchTriggerEvent: 'loadstart',
+      seekTriggerEvent: 'play', 
+      saveTriggerEvent: 'pause', 
+      deleteTriggerEvent: 'ended', 
+      updateInterval: 10000,
+      saveSecondsFromEnd: 5
+     });
+      
+    player.ready(function(){
+      var myPlayer = this;
+      myPlayer.width(window.innerWidth - 20);
+      myPlayer.height(window.innerHeight - 20);
+
+      myPlayer.src([
+        {type: "video/mp4", src: "http://media.w3.org/2010/05/sintel/trailer.mp4"},
+        {type: "video/webm", src: "http://media.w3.org/2010/05/sintel/trailer.webm"}
+      ]);
+    });
+
+    </script>
+  </body>
 </html>

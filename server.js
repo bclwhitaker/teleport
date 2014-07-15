@@ -43,7 +43,7 @@ db.once('open', function() {
 
 /**
 * Handles updating the Mongo collection which tracks the position users are at in specific
-* videos.
+* videos. The position is tracked in seconds.
 */
 app.post('/userId/:userId/videoId/:videoId/position/:position', function (req, res) {
   res.set('Access-Control-Allow-Origin', '*');
@@ -122,7 +122,7 @@ app.post('/userId/:userId/playlistId/:playlistId/videoId/:videoId', function (re
 * Responds with where the user should be in the specified video. If there is no entry
 * in the database for this user/video 0 is returned.
 *
-* Numbers returned are in seconds.
+* Positions returned are in seconds.
 */
 app.get('/userId/:userId/videoId/:videoId', function (req, res) {
   res.set('Access-Control-Allow-Origin', '*');

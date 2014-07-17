@@ -4,10 +4,19 @@
 <link rel="stylesheet" href="http://vjs.zencdn.net/4.1/video-js.css">
 <script src="http://vjs.zencdn.net/4.1/video.js"></script>
   <body>
-    <video id='demoPlayer' src='http://media.w3.org/2010/05/sintel/trailer.mp4' class="video-js vjs-default-skin" data-setup="{}" controls></video>
-    <script src="http://solutions.brightcove.com/lwhitaker/plugins/videojs.teleport-plugin.min.js"></script>
+    <button id="loadFavorites" onclick="loadFavorites()">Load Playlist</button>
+    <button id="addToFavorites" onclick="addToFavorites()">Add this page's video to favorites</button>
+    <div class = "content">
+      <video id='demoPlayer' src='http://media.w3.org/2010/05/sintel/trailer.mp4' class="video-js vjs-default-skin" data-setup="{}" controls></video>
+      <div class ="playlistControl" style="..."></div>
+    </div>
 
-    <!-- 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://ec2-107-20-72-18.compute-1.amazonaws.com:2005/plugins/videojs.teleport-plugin.js"></script>
+    <script src="http://ec2-107-20-72-18.compute-1.amazonaws.com:2005/plugins/videojs-playlists.js"></script>
+    <script src="http://ec2-107-20-72-18.compute-1.amazonaws.com:2005/plugins/videojs-playlist-loader.js"></script>
+
+    <!--
       video.js will automatically initialize the video element since it's loaded in
       the head of the document but you still need to configure and initialize the
       plugin.
@@ -37,14 +46,56 @@
         return null;
       },
 
+      /**
+      * Fetches the video Id from the current loaded playlist. If no id is found null is returned.
+      */
       videoId = function() {
-        return 'demo';
+        var
+          videoId = null;
+          currentVideo = player.currentPlaylist()[player.currentIndex()];
+
+        if (currentVideo && currentVideo.id) {
+          videoId = currentVideo.id;
+        }
+
+        return videoId;
       },
         
       // save a reference to the video.js player for that element
       player = videojs("demoPlayer");
 
-        // initialize the plugin with some custom options:
+      playerVideo = {
+        src : [
+          'http://video-js.zencoder.com/oceans-clip.mp4',
+          'http://video-js.zencoder.com/oceans-clip.webm',
+          'http://video-js.zencoder.com/oceans-clip.ogv'
+        ],
+        poster: 'http://video-js.zencoder.com/oceans-clip.png',
+        title : 'Starting Video',
+        id: '1234'
+      },
+
+        loadFavorites = function() {
+          player.getPlaylist('demouser', 'demoPlaylist', function(error, playlist) {
+            player.setPlaylist('demoPlaylist');
+          });
+        };
+
+        addToFavorites = function() {
+          player.addVideoToPlaylist('demouser', 'demoPlaylist', playerVideo, function(error, playlistData) {
+            loadFavorites();
+          });
+        };
+
+      player.mockCmsPlaylistLoader({
+        initialVideo: playerVideo,
+        playlistDivClass: 'playlistControl',
+        socialAccountId: 'demouser',
+        accountId: 'test',
+        playlistId: 'demoPlaylist'
+      });
+
+    // initialize the plugin with some custom options:
     player.teleportplugin({
       teleportServer: 'http://ec2-107-20-72-18.compute-1.amazonaws.com:2005',
       fetchUserId: userId,
@@ -55,7 +106,7 @@
       deleteTriggerEvent: 'ended', 
       updateInterval: 10000,
       saveSecondsFromEnd: 5
-     });
+    });
       
     player.ready(function(){
       var myPlayer = this;
